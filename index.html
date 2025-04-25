@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>টাকা ক্যালকুলেটর</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    select, input {
+      padding: 5px;
+      margin-left: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <h2>শুক্রবার বাদ দিয়ে টাকা ক্যালকুলেটর</h2>
+
+  <label>মাস নির্বাচন করুন:
+    <select id="month">
+      <option value="0">জানুয়ারি</option>
+      <option value="1">ফেব্রুয়ারি</option>
+      <option value="2">মার্চ</option>
+      <option value="3">এপ্রিল</option>
+      <option value="4">মে</option>
+      <option value="5">জুন</option>
+      <option value="6">জুলাই</option>
+      <option value="7">আগস্ট</option>
+      <option value="8">সেপ্টেম্বর</option>
+      <option value="9">অক্টোবর</option>
+      <option value="10">নভেম্বর</option>
+      <option value="11">ডিসেম্বর</option>
+    </select>
+  </label>
+
+  <label>বছর:
+    <input type="number" id="year" value="2025">
+  </label>
+
+  <label>প্রতি দিনের আয় (টাকা):
+    <input type="number" id="dailyIncome" value="300">
+  </label>
+
+  <button onclick="calculate()">হিসাব করো</button>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function countFridays(month, year) {
+      let date = new Date(year, month, 1);
+      let fridays = [];
+      while (date.getMonth() === month) {
+        if (date.getDay() === 5) {
+          fridays.push(date.getDate());
+        }
+        date.setDate(date.getDate() + 1);
+      }
+      return fridays;
+    }
+
+    function calculate() {
+      let month = parseInt(document.getElementById("month").value);
+      let year = parseInt(document.getElementById("year").value);
+      let dailyIncome = parseInt(document.getElementById("dailyIncome").value);
+
+      let daysInMonth = new Date(year, month + 1, 0).getDate();
+      let fridays = countFridays(month, year);
+      let workingDays = daysInMonth - fridays.length;
+      let totalIncome = workingDays * dailyIncome;
+
+      let monthNames = [
+        "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+        "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"
+      ];
+
+      document.getElementById("result").innerText =
+        "নির্বাচিত মাস: " + monthNames[month] + " " + year + "\n" +
+        "মাসে শুক্রবারের সংখ্যা: " + fridays.length + "\n" +
+        "শুক্রবারের তারিখ: " + fridays.join(", ") + "\n" +
+        "কাজের দিন: " + workingDays + "\n" +
+        "মোট আয় (শুক্রবার বাদে): " + totalIncome + " টাকা";
+    }
+  </script>
+</body>
+</html>
