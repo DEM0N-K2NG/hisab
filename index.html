@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>টাকা ক্যালকুলেটর</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px 20px 80px;
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+      color: #333;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00695c;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      max-width: 500px;
+      background: white;
+      padding: 30px 25px;
+      margin: 0 auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    select, input {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #f9fbe7;
+      border-left: 5px solid #558b2f;
+      border-radius: 6px;
+      font-size: 16px;
+      color: #33691e;
+      white-space: pre-line;
+    }
+
+    #footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>শুক্রবার বাদ দিয়ে টাকা ক্যালকুলেটর</h2>
+
+  <div class="container">
+    <label>মাস নির্বাচন করুন:
+      <select id="month">
+        <option value="0">January</option>
+        <option value="1">February</option>
+        <option value="2">March</option>
+        <option value="3">April</option>
+        <option value="4">May</option>
+        <option value="5">June</option>
+        <option value="6">July</option>
+        <option value="7">August</option>
+        <option value="8">September</option>
+        <option value="9">October</option>
+        <option value="10">November</option>
+        <option value="11">December</option>
+      </select>
+    </label>
+
+    <label>বছর:
+      <input type="number" id="year" value="2025">
+    </label>
+
+    <label>প্রতি দিনের আয় (টাকা):
+      <input type="number" id="dailyIncome" value="300">
+    </label>
+
+    <button onclick="calculate()">হিসাব করো</button>
+
+    <div id="result"></div>
+  </div>
+
+  <div id="footer">Developed by : Muhammad Kabir</div>
+
+  <script>
+    function countFridays(month, year) {
+      let date = new Date(year, month, 1);
+      let fridays = [];
+      while (date.getMonth() === month) {
+        if (date.getDay() === 5) {
+          fridays.push(date.getDate());
+        }
+        date.setDate(date.getDate() + 1);
+      }
+      return fridays;
+    }
+
+    function calculate() {
+      let month = parseInt(document.getElementById("month").value);
+      let year = parseInt(document.getElementById("year").value);
+      let dailyIncome = parseInt(document.getElementById("dailyIncome").value);
+
+      let daysInMonth = new Date(year, month + 1, 0).getDate();
+      let fridays = countFridays(month, year);
+      let workingDays = daysInMonth - fridays.length;
+      let totalIncome = workingDays * dailyIncome;
+
+      let monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      document.getElementById("result").innerText =
+        "মাস: " + monthNames[month] + " " + year + "\n" +
+        "শুক্রবারের সংখ্যা: " + fridays.length + "\n" +
+        "শুক্রবারের তারিখ: " + fridays.join(", ") + "\n" +
+        "কাজের দিন: " + workingDays + "\n" +
+        "মোট আয় (শুক্রবার বাদে): " + totalIncome + " টাকা";
+    }
+  </script>
+</body>
+</html>
