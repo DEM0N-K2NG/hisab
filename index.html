@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>টাকা ক্যালকুলেটর</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #e1f5fe, #fce4ec);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .calculator-box {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #00796b;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #f1f8e9;
+      border: 1px solid #c5e1a5;
+      border-radius: 8px;
+      color: #33691e;
+      font-size: 16px;
+      white-space: pre-line;
+    }
+
+    footer {
+      text-align: center;
+      background-color: black;
+      color: white;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+
+    @media (max-width: 500px) {
+      .calculator-box {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="calculator-box">
+      <h2>হিসাব করো নির্ভুল এ</h2>
+
+      <label>মাস নির্বাচন করুন:
+        <select id="month">
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+      </label>
+
+      <label>বছর:
+        <input type="number" id="year" value="2025">
+      </label>
+
+      <label>প্রতি দিনের আয় (টাকা):
+        <input type="number" id="dailyIncome" value="300">
+      </label>
+
+      <button onclick="calculate()">হিসাব করো</button>
+
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <footer>
+    Web Development by : Muhammad Kabir
+  </footer>
+
+  <script>
+    function countFridays(month, year) {
+      let date = new Date(year, month, 1);
+      let fridays = [];
+      while (date.getMonth() === month) {
+        if (date.getDay() === 5) {
+          fridays.push(date.getDate());
+        }
+        date.setDate(date.getDate() + 1);
+      }
+      return fridays;
+    }
+
+    function calculate() {
+      let month = parseInt(document.getElementById("month").value);
+      let year = parseInt(document.getElementById("year").value);
+      let dailyIncome = parseInt(document.getElementById("dailyIncome").value);
+
+      let daysInMonth = new Date(year, month + 1, 0).getDate();
+      let fridays = countFridays(month, year);
+      let workingDays = daysInMonth - fridays.length;
+      let totalIncome = workingDays * dailyIncome;
+
+      let monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      document.getElementById("result").innerText =
+        "মাস: " + monthNames[month] + " " + year + "\n" +
+        "শুক্রবারের সংখ্যা: " + fridays.length + "\n" +
+        "শুক্রবারের তারিখ: " + fridays.join(", ") + "\n" +
+        "কাজের দিন: " + workingDays + "\n" +
+        "মোট আয় (শুক্রবার বাদে): " + totalIncome + " টাকা";
+    }
+  </script>
+
+</body>
+</html>
